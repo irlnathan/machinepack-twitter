@@ -1,0 +1,10 @@
+{
+  "machine": "get-user-profile",
+  "expectations": [
+    {
+      "todo": true,
+      "using": {},
+      "outcome": "success"
+    }
+  ]
+}

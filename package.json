@@ -32,6 +32,7 @@
       "get-login-url",
       "get-access-token",
       "get-user-profile"
-    ]
+    ],
+    "testsUrl": "https://travis-ci.org/irlnathan/machinepack-twitter"
   }
 }
