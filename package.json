@@ -1,0 +1,37 @@
+{
+  "name": "machinepack-twitter",
+  "version": "0.1.0",
+  "description": "Communicate with the Twitter API to get profile data, tweets, followers, and more.",
+  "scripts": {
+    "test": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
+  },
+  "keywords": [
+    "Twitter",
+    "Twitter api",
+    "machines",
+    "machinepack"
+  ],
+  "author": "Irl Nathan",
+  "license": "MIT",
+  "dependencies": {
+    "machine": "^3.0.0",
+    "request": "^2.53.0",
+    "lodash": "^3.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irlnathan/machinepack-twitter.git"
+  },
+  "devDependencies": {
+    "test-machinepack-mocha": "^0.2.2"
+  },
+  "machinepack": {
+    "friendlyName": "Twitter",
+    "machineDir": "machines/",
+    "machines": [
+      "get-login-url",
+      "get-access-token",
+      "get-user-profile"
+    ]
+  }
+}
