@@ -35,7 +35,7 @@ module.exports = {
       description: 'Unexpected error occurred.'
     },
     success: {
-      description: '',
+      description: 'The initial URL where a user can allow/deny a specified Twitter app.',
       example: 'https://twitter.com/oauth/authenticate?oauth_token=80Hl2t3SKgdPLyD0xMxoEPoJP3CEQSXV'
     }
   },
