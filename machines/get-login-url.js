@@ -1,8 +1,17 @@
 module.exports = {
+
+
   friendlyName: 'Get login url',
+
+
   description: 'Get the URL on twitter.com that a user should visit to allow/deny the specified Twitter Developer app (i.e. your app).',
+
+
   extendedDescription: '',
+
+
   inputs: {
+
     consumerKey: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
       description: 'The oauth_consumer_key identifies which application is making the request. ',
@@ -13,6 +22,7 @@ module.exports = {
         extendedDescription: ''
       }
     },
+
     consumerSecret: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
       description: 'The oauth_consumer_key identifies which application is making the request. ',
@@ -23,22 +33,33 @@ module.exports = {
         extendedDescription: ''
       }
     },
+
     callbackUrl: {
       example: 'http://localhost:1337/auth/callback',
       description: 'The callback URL where the end user will be redirected after visiting the login URL returned by this machine.',
       required: true
     }
+
   },
+
+
   defaultExit: 'success',
+
+
   exits: {
+
     error: {
       description: 'Unexpected error occurred.'
     },
+
     success: {
       description: 'The initial URL where a user can allow/deny a specified Twitter app.',
       example: 'https://twitter.com/oauth/authenticate?oauth_token=80Hl2t3SKgdPLyD0xMxoEPoJP3CEQSXV'
     }
+
   },
+
+
   fn: function(inputs, exits) {
 
     var request = require('request');
@@ -65,4 +86,6 @@ module.exports = {
 
     });
   }
+
+
 };

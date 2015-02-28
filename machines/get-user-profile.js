@@ -1,8 +1,17 @@
 module.exports = {
+
+
   friendlyName: 'Get user profile',
-  description: 'List all of the user\'s profile information.',
+
+
+  description: 'Get a user\'s Twitter profile information.',
+
+
   extendedDescription: '',
+
+
   inputs: {
+
     consumerKey: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
       description: 'The oauth_consumer_key identifies which application is making the request. ',
@@ -13,6 +22,7 @@ module.exports = {
         extendedDescription: ''
       }
     },
+
     consumerSecret: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
       description: 'The oauth_consumer_key identifies which application is making the request. ',
@@ -23,6 +33,7 @@ module.exports = {
         extendedDescription: ''
       }
     },
+
     permUserToken: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
       description: 'The permanent OAuth token for a given user.',
@@ -32,6 +43,7 @@ module.exports = {
       },
       required: true
     },
+
     permUserSecret: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
       description: 'The permanent OAuth secret for a given user.',
@@ -40,17 +52,25 @@ module.exports = {
       },
       required: true
     },
+
     screenName: {
       example: 'johngalt',
       description: 'The screen name of the user to look up.',
       required: true
     }
+
   },
+
+
   defaultExit: 'success',
+
+
   exits: {
+
     error: {
       description: 'Unexpected error occurred.'
     },
+
     success: {
       description: 'Returns the user\'s profile.',
       example: {
@@ -74,7 +94,10 @@ module.exports = {
         suspended: false
       }
     }
+
   },
+
+
   fn: function(inputs, exits) {
 
     var request = require('request');
@@ -126,4 +149,6 @@ module.exports = {
       });
     });
   }
+
+
 };
