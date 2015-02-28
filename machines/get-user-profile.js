@@ -77,6 +77,9 @@ module.exports = {
       example: {
         name: 'John Galt',
         screenName: 'johngalt',
+        profileImageUrl: 'http://pbs.twimg.com/profile_images/3367735923/e3fa48371ed40fb3466fc2cdec18a3aa_normal.jpeg',
+        profileImageUrlHttps: 'https://pbs.twimg.com/profile_images/3367735923/e3fa48371ed40fb3466fc2cdec18a3aa_normal.jpeg',
+        bannerImageUrl: 'https://pbs.twimg.com/profile_banners/54952598/1354583726',
         location: 'Galt\'s Gulch',
         description: 'Overall philosophical genius',
         createdAt: '2009-07-08T16:50:31.000Z',
@@ -128,9 +131,13 @@ module.exports = {
       if (response.statusCode > 299 || response.statusCode < 200) {
         return exits.error(response.statusCode);
       }
+
       return exits.success({
         name: body.name,
         screenName: body.screen_name,
+        profileImageUrl: body.profile_image_url,
+        profileImageUrlHttps: body.profile_image_url_https,
+        bannerImageUrl: body.profile_banner_url,
         location: body.location,
         description: body.description,
         url: body.url,
