@@ -60,16 +60,16 @@ module.exports = {
         description: 'Overall philosophical genius',
         url: 'http://t.co/UDSfsSDFd',
         protected: false,
-        followers_count: 5050234234,
-        friends_count: 23423423423,
-        listed_count: 2342,
-        created_at: 'Wed Jan 12 21:49:17 +0000 2011',
-        favourites_count: 1,
-        utc_offset: -18000,
-        time_zone: 'Eastern Time (US & Canada)',
-        geo_enabled: false,
+        followersCount: 5050234234,
+        friendsCount: 23423423423,
+        listedCount: 2342,
+        createdAt: 'Wed Jan 12 21:49:17 +0000 2011',
+        favouritesCount: 1,
+        utcOffset: -18000,
+        timezone: 'Eastern Time (US & Canada)',
+        geoEnabled: false,
         verified: false,
-        statuses_count: 23423,
+        statusesCount: 23423,
         lang: 'en',
         suspended: false
       }
@@ -104,7 +104,26 @@ module.exports = {
       if (response.statusCode > 299 || response.statusCode < 200) {
         return exits.error(response.statusCode);
       }
-      return exits.success(body);
+      return exits.success({
+        name: body.name,
+        screenName: body.screen_name,
+        location: body.location,
+        description: body.description,
+        url: body.url,
+        protected: body.protected,
+        followersCount: body.followers_count,
+        friendsCount: body.friends_count,
+        listedCount: body.listed_count,
+        createdAt: body.created_at,
+        favoritesCount: body.favourites_count,
+        utcOffset: body.utc_offset,
+        timezone: body.time_zone,
+        geoEnabled: body.geo_enabled,
+        verified: body.verified,
+        statusesCount: body.statuses_count,
+        lang: body.lang,
+        suspended: body.suspended
+      });
     });
   }
 };
