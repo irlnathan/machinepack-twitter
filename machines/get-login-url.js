@@ -1,7 +1,7 @@
 module.exports = {
 
 
-  friendlyName: 'Get login url',
+  friendlyName: 'Get login URL',
 
 
   description: 'Get the URL on twitter.com that a user should visit to allow/deny the specified Twitter Developer app (i.e. your app).',
