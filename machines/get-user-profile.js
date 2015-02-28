@@ -26,12 +26,22 @@ module.exports = {
     permUserToken: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
       description: 'The permanent OAuth token for a given user.',
-      required: true
+      required: true,
+      whereToGet: {
+        url: '',
+        description: 'This token is found in the oauth_token param from the getAccessToken machine.',
+        extendedDescription: ''
+      }
     },
     permUserSecret: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
       description: 'The permanent OAuth secret for a given user.',
-      required: true
+      required: true,
+      whereToGet: {
+        url: '',
+        description: 'This token is found in the oauth_verifier param from the getAccessToken machine.',
+        extendedDescription: ''
+      }
     },
     screenName: {
       example: 'johngalt',
