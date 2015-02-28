@@ -44,27 +44,25 @@ module.exports = {
     var request = require('request');
     var qs = require('querystring');
 
-    var oauth = {
-      callback: inputs.callbackUrl,
-      consumer_key: inputs.consumerKey,
-      consumer_secret: inputs.consumerSecret
-    }
-
-    var url = 'https://api.twitter.com/oauth/request_token';
-
     request.post({
-      url: url,
-      oauth: oauth
-    }, function(e, r, body) {
-
-      if (e) {
-        return exits.error(e);
+      url: 'https://api.twitter.com/oauth/request_token',
+      oauth: {
+        callback: inputs.callbackUrl,
+        consumer_key: inputs.consumerKey,
+        consumer_secret: inputs.consumerSecret
+      }
+    }, function(err, response, body) {
+      if (err) {
+        return exits.error(err);
+      }
+      if (response.statusCode > 299 || response.statusCode < 200) {
+        return exits.error(response.statusCode);
       }
 
       var access_token = qs.parse(body);
 
-      return exits.success("https://twitter.com/oauth/authenticate?oauth_token=" + access_token.oauth_token);
+      return exits.success('https://twitter.com/oauth/authenticate?oauth_token=' + access_token.oauth_token);
 
     });
   }
-}
+};

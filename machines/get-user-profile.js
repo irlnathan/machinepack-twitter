@@ -26,21 +26,23 @@ module.exports = {
     permUserToken: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
       description: 'The permanent OAuth token for a given user.',
+      extendedDescription: 'This is Twitter knows the end user has granted access to your app.',
+      whereToGet: {
+        description: 'Run the `getAccessToken` machine in this pack.'
+      },
       required: true
     },
     permUserSecret: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
       description: 'The permanent OAuth secret for a given user.',
+      whereToGet: {
+        description: 'Run the `getAccessToken` machine in this pack.'
+      },
       required: true
     },
     screenName: {
       example: 'johngalt',
-      description: 'The screen name for a given user.',
-      required: true
-    },
-    userId: {
-      example: '234544343',
-      description: 'The user id of a Twitter user.',
+      description: 'The screen name of the user to look up.',
       required: true
     }
   },
@@ -79,10 +81,15 @@ module.exports = {
 
     request.get({
       url: 'https://api.twitter.com/1.1/users/show.json',
-      qs: {
-        screen_name: inputs.screenName,
-        user_id: inputs.userId
-      },
+      qs: (function _determineParams (){
+        // EITHER screen name or user id is required, but NOT BOTH!
+        // (for now we just allow username)
+        var _params = {};
+        if (inputs.screenName) {
+          _params.screen_name = inputs.screenName;
+        }
+        return _params;
+      })(),
       oauth: {
         consumer_key: inputs.consumerKey,
         consumer_secret: inputs.consumerSecret,
