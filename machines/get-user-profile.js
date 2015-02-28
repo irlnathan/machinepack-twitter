@@ -14,48 +14,48 @@ module.exports = {
 
     consumerKey: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The oauth_consumer_key identifies which application is making the request. ',
+      description: 'The `consumerKey` associated with one of your Twitter developer apps.',
       required: true,
       whereToGet: {
         url: 'http://dev.twitter.com/apps',
         description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: ''
+        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
       }
     },
 
     consumerSecret: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The oauth_consumer_key identifies which application is making the request. ',
+      description: 'The `consumerSecret` associated with one of your Twitter developer apps.',
       required: true,
       whereToGet: {
         url: 'http://dev.twitter.com/apps',
         description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: ''
+        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
       }
     },
 
-    permUserToken: {
+    accessToken: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
       description: 'The permanent OAuth token for a given user.',
       extendedDescription: 'This is Twitter knows the end user has granted access to your app.',
       whereToGet: {
-        description: 'Run the `getAccessToken` machine in this pack.'
+        description: 'Run the `getAccessToken` machine in this pack and use the returned `accessToken`.'
       },
       required: true
     },
 
-    permUserSecret: {
+    accessSecret: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
       description: 'The permanent OAuth secret for a given user.',
       whereToGet: {
-        description: 'Run the `getAccessToken` machine in this pack.'
+        description: 'Run the `getAccessToken` machine in this pack and use the returned `accessSecret`.'
       },
       required: true
     },
 
     screenName: {
       example: 'johngalt',
-      description: 'The screen name of the user to look up.',
+      description: 'The Twitter screen name (i.e. username) of a Twitter account to look up.',
       required: true
     }
 
@@ -116,8 +116,8 @@ module.exports = {
       oauth: {
         consumer_key: inputs.consumerKey,
         consumer_secret: inputs.consumerSecret,
-        token: inputs.permUserToken,
-        token_secret: inputs.permUserSecret
+        token: inputs.accessToken,
+        token_secret: inputs.accessSecret
       },
       json: true
     }, function(err, response, body) {

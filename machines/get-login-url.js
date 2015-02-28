@@ -14,23 +14,23 @@ module.exports = {
 
     consumerKey: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The oauth_consumer_key identifies which application is making the request. ',
+      description: 'The `consumerKey` associated with one of your Twitter developer apps.',
       required: true,
       whereToGet: {
         url: 'http://dev.twitter.com/apps',
         description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: ''
+        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
       }
     },
 
     consumerSecret: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The oauth_consumer_key identifies which application is making the request. ',
+      description: 'The `consumerSecret` associated with one of your Twitter developer apps.',
       required: true,
       whereToGet: {
         url: 'http://dev.twitter.com/apps',
         description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: ''
+        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
       }
     },
 
