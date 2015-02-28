@@ -34,10 +34,16 @@ module.exports = {
       }
     },
 
+    screenName: {
+      example: 'johngalt',
+      description: 'The Twitter screen name (i.e. username) of a Twitter account to look up.',
+      required: true
+    },
+
     accessToken: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
-      description: 'The permanent OAuth token for a given user.',
-      extendedDescription: 'This is Twitter knows the end user has granted access to your app.',
+      description: 'The access token for a given user (granted by Twitter)',
+      extendedDescription: 'This "permanent OAuth token" is how Twitter knows the end user has granted access to your app.',
       whereToGet: {
         description: 'Run the `getAccessToken` machine in this pack and use the returned `accessToken`.'
       },
@@ -46,16 +52,11 @@ module.exports = {
 
     accessSecret: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
-      description: 'The permanent OAuth secret for a given user.',
+      description: 'The access secret for a given user (granted by Twitter)',
+      extendedDescription: 'This "permanent OAuth secret" is how Twitter knows the end user has granted access to your app.',
       whereToGet: {
         description: 'Run the `getAccessToken` machine in this pack and use the returned `accessSecret`.'
       },
-      required: true
-    },
-
-    screenName: {
-      example: 'johngalt',
-      description: 'The Twitter screen name (i.e. username) of a Twitter account to look up.',
       required: true
     }
 
@@ -75,23 +76,23 @@ module.exports = {
       description: 'Returns the user\'s profile.',
       example: {
         name: 'John Galt',
-        screen_name: 'johngalt',
+        screenName: 'johngalt',
         location: 'Galt\'s Gulch',
         description: 'Overall philosophical genius',
+        createdAt: '2009-07-08T16:50:31.000Z',
         url: 'http://t.co/UDSfsSDFd',
-        protected: false,
         followersCount: 5050234234,
         friendsCount: 23423423423,
         listedCount: 2342,
-        createdAt: 'Wed Jan 12 21:49:17 +0000 2011',
-        favouritesCount: 1,
+        favoritesCount: 124,
+        statusesCount: 23423,
         utcOffset: -18000,
         timezone: 'Eastern Time (US & Canada)',
-        geoEnabled: false,
-        verified: false,
-        statusesCount: 23423,
-        lang: 'en',
-        suspended: false
+        language: 'en',
+        isGeoEnabled: true,
+        isProtected: true,
+        isVerified: true,
+        isSuspended: true
       }
     }
 
@@ -133,19 +134,19 @@ module.exports = {
         location: body.location,
         description: body.description,
         url: body.url,
-        protected: body.protected,
         followersCount: body.followers_count,
         friendsCount: body.friends_count,
         listedCount: body.listed_count,
-        createdAt: body.created_at,
+        createdAt: (new Date(body.created_at)).toJSON(),
         favoritesCount: body.favourites_count,
         utcOffset: body.utc_offset,
         timezone: body.time_zone,
-        geoEnabled: body.geo_enabled,
-        verified: body.verified,
+        isVerified: body.verified,
+        language: body.lang,
+        isGeoEnabled: body.geo_enabled,
         statusesCount: body.statuses_count,
-        lang: body.lang,
-        suspended: body.suspended
+        isProtected: body.protected,
+        isSuspended: body.suspended
       });
     });
   }
