@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:mikermcneil/machinepack-twitter.git"
+    "url": "git@github.com:irlnathan/machinepack-twitter.git"
   },
   "devDependencies": {
     "test-machinepack-mocha": "^0.2.2"
@@ -28,6 +28,7 @@
   "machinepack": {
     "friendlyName": "Twitter",
     "machineDir": "machines/",
+    "iconSrc": "https://s3-us-west-1.amazonaws.com/machinepack-icons/machinepack_twitter.png",
     "machines": [
       "get-login-url",
       "get-access-token",
