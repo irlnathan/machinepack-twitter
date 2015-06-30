@@ -14,16 +14,16 @@
   "author": "Irl Nathan",
   "license": "MIT",
   "dependencies": {
-    "machine": "^3.0.0",
-    "request": "^2.53.0",
-    "lodash": "^3.2.0"
+    "lodash": "^3.2.0",
+    "machine": "^10.3.1",
+    "request": "^2.53.0"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:irlnathan/machinepack-twitter.git"
   },
   "devDependencies": {
-    "test-machinepack-mocha": "^0.2.2"
+    "test-machinepack-mocha": "^2.1.1"
   },
   "machinepack": {
     "friendlyName": "Twitter",
