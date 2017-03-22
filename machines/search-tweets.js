@@ -143,7 +143,7 @@ module.exports = {
       if(!_.isUndefined(inputs.latitude) && _.isUndefined(inputs.longitude) || _.isUndefined(inputs.latitude) && !_.isUndefined(inputs.longitude)) {
         return exits.error(new Error('If `latitude` is specified, then `longitude` must also be specified (and vice versa)'));
       }
-      requestOpts.qs.geocode = [inputs.latitude, inputs.longitude, inputs.radius].join(',');
+      requestOpts.qs.geocode = [inputs.latitude, inputs.longitude, inputs.radius+'km'].join(',');
     }//>-
 
 
