@@ -12,10 +12,16 @@ module.exports = {
 
   inputs: {
 
+    screenName: {
+      example: 'johngalt',
+      description: 'The Twitter screen name (i.e. username) of a Twitter account to look up.',
+      required: true
+    },
+
     consumerKey: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
       description: 'The `consumerKey` associated with one of your Twitter developer apps.',
-      required: true,
+      required: false,
       whereToGet: {
         url: 'http://dev.twitter.com/apps',
         description: 'Copy and paste an API key, or create one if you haven\'t already.',
@@ -26,18 +32,12 @@ module.exports = {
     consumerSecret: {
       example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
       description: 'The `consumerSecret` associated with one of your Twitter developer apps.',
-      required: true,
+      required: false,
       whereToGet: {
         url: 'http://dev.twitter.com/apps',
         description: 'Copy and paste an API key, or create one if you haven\'t already.',
         extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
       }
-    },
-
-    screenName: {
-      example: 'johngalt',
-      description: 'The Twitter screen name (i.e. username) of a Twitter account to look up.',
-      required: true
     },
 
     accessToken: {
@@ -47,7 +47,7 @@ module.exports = {
       whereToGet: {
         description: 'Run the `getAccessToken` machine in this pack and use the returned `accessToken`.'
       },
-      required: true
+      required: false
     },
 
     accessSecret: {
@@ -57,7 +57,16 @@ module.exports = {
       whereToGet: {
         description: 'Run the `getAccessToken` machine in this pack and use the returned `accessSecret`.'
       },
-      required: true
+      required: false
+    },
+
+    bearerToken: {
+      example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
+      description: 'Can be used in place of `consumerKey`, `consumerSecret`, `accessToken`, and `accessSecret`.',
+      whereToGet: {
+        description: 'Run the `getBearerToken` machine in this pack and use the returned `bearerToken`.'
+      },
+      required: false
     }
 
   },
@@ -104,32 +113,62 @@ module.exports = {
 
   fn: function(inputs, exits) {
 
+    var util = require('util');
     var request = require('request');
+    var _ = require('lodash');
 
-    request.get({
+    // If no bearer token was provided, then `consumerKey`, `consumerSecret`,
+    // `accessToken`, and `accessSecret` must ALL be provided.
+    if(_.isUndefined(inputs.bearerToken) &&
+      ( _.isUndefined(inputs.consumerKey) ||
+        _.isUndefined(inputs.consumerSecret) ||
+        _.isUndefined(inputs.accessToken) ||
+        _.isUndefined(inputs.accessSecret))) {
+      return exits.error(new Error('Usage error: If `bearerToken` was not provided, then `consumerKey`, `consumerSecret`, `accessToken`, and `accessSecret` must ALL be provided.'));
+    }
+
+    // If bearer token was provided, then `consumerKey`, `consumerSecret`,
+    // `accessToken`, and `accessSecret` must NOT be provided.
+    if(!_.isUndefined(inputs.bearerToken) &&
+      ( !_.isUndefined(inputs.consumerKey) ||
+        !_.isUndefined(inputs.consumerSecret) ||
+        !_.isUndefined(inputs.accessToken) ||
+        !_.isUndefined(inputs.accessSecret))) {
+      return exits.error(new Error('Usage error: If `bearerToken` was provided, then other credentials should not be provided.'));
+    }
+
+    var requestOpts = {
       url: 'https://api.twitter.com/1.1/users/show.json',
       qs: (function _determineParams (){
         // EITHER screen name or user id is required, but NOT BOTH!
         // (for now we just allow username)
         var _params = {};
-        if (inputs.screenName) {
-          _params.screen_name = inputs.screenName;
-        }
+        _params.screen_name = inputs.screenName;
         return _params;
       })(),
-      oauth: {
+      json: true
+    };
+
+    if(!_.isUndefined(inputs.bearerToken)) {
+      requestOpts.headers = {
+        Authorization: 'Bearer '+inputs.bearerToken
+      };
+    }
+    else {
+      requestOpts.oauth = {
         consumer_key: inputs.consumerKey,
         consumer_secret: inputs.consumerSecret,
         token: inputs.accessToken,
         token_secret: inputs.accessSecret
-      },
-      json: true
-    }, function(err, response, body) {
+      };
+    }
+
+    request.get(requestOpts, function(err, response, body) {
       if (err) {
         return exits.error(err);
       }
       if (response.statusCode > 299 || response.statusCode < 200) {
-        return exits.error(response.statusCode);
+        return exits.error(new Error('Twitter responded with a non 2xx status code:'+ response.statusCode + '   ' + util.inspect(body)));
       }
 
       return exits.success({
