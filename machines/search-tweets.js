@@ -116,11 +116,13 @@ module.exports = {
       requestOpts.qs.q = inputs.q;
     }//>-
 
+    // Support searching by latitude/longitude
+    // (https://dev.twitter.com/rest/reference/get/search/tweets#parameters)
     if(!_.isUndefined(inputs.latitude) || !_.isUndefined(inputs.longitude)) {
       if(!_.isUndefined(inputs.latitude) && _.isUndefined(inputs.longitude) || _.isUndefined(inputs.latitude) && !_.isUndefined(inputs.longitude)) {
         return exits.error(new Error('If `latitude` is specified, then `longitude` must also be specified (and vice versa)'));
       }
-      requestOpts.qs.geocode = [inputs.latitude, inputs.longitude, inputs.radius+'km'].join(',');
+      requestOpts.qs.geocode = [inputs.latitude, inputs.longitude, inputs.radius+'km'].join(' ');
     }//>-
 
 

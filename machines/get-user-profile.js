@@ -83,8 +83,8 @@ module.exports = {
   fn: function(inputs, exits) {
 
     var util = require('util');
-    var request = require('request');
     var _ = require('lodash');
+    var request = require('request');
 
     // If no bearer token was provided, then `consumerKey`, `consumerSecret`,
     // `accessToken`, and `accessSecret` must ALL be provided.
