@@ -62,9 +62,6 @@ module.exports = {
   },
 
 
-  defaultExit: 'success',
-
-
   exits: {
 
     error: {
@@ -72,8 +69,8 @@ module.exports = {
     },
 
     success: {
-      description: 'Returns the user\'s permanent tokens, id, and screen name.',
-      example: {
+      outputDescription: 'The user\'s permanent tokens, id, and screen name.',
+      outputExample: {
         accessToken: '847489329-998DSdafaasdDSF08asdfda08agf6ad6fsdaa08dasdaf76sa5',
         accessSecret: 'SDFSssdfsdf9&SDfSDFSDFSfd9877ssdf',
         screenName: 'johngalt',
@@ -86,38 +83,36 @@ module.exports = {
 
   fn: function(inputs, exits) {
 
+    var util = require('util');
     var request = require('request');
     var qs = require('querystring');
 
     request.post({
       url: 'https://api.twitter.com/oauth/access_token',
       oauth: {
-        consumer_key: inputs.consumerKey,
-        consumer_secret: inputs.consumerSecret,
+        consumer_key: inputs.consumerKey,// eslint-disable-line camelcase
+        consumer_secret: inputs.consumerSecret,// eslint-disable-line camelcase
         token: inputs.oauthToken,
         verifier: inputs.oauthVerifier
       }
     }, function(err, response, body) {
-      if (err) {
-        return exits.error(err);
-      }
+      if (err) { return exits.error(err); }
       if (response.statusCode > 299 || response.statusCode < 200) {
-        return exits.error(response.statusCode);
+        return exits.error(new Error('Unexpected response from Twitter API: '+response.statusCode+' :: '+util.inspect(body,{depth:5})));
       }
 
-
-      var parsedResponse;
+      var parsedResBody;
       try {
         // oauth_token=3493938-B34829ABLD2NASI242AAGa32&oauth_token_secret=42Ga2gj249gADg9031jgasdGanv2139mmadval14aD&user_id=3493938&screen_name=mikermcneil
-        parsedResponse = qs.parse(body);
+        parsedResBody = qs.parse(body);
       }
       catch (e) { return exits.error(e); }
 
       return exits.success({
-        userId: parsedResponse.user_id,
-        screenName: parsedResponse.screen_name,
-        accessToken: parsedResponse.oauth_token,
-        accessSecret: parsedResponse.oauth_token_secret
+        userId: parsedResBody.user_id,
+        screenName: parsedResBody.screen_name,
+        accessToken: parsedResBody.oauth_token,
+        accessSecret: parsedResBody.oauth_token_secret
       });
 
     });

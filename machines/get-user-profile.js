@@ -140,7 +140,7 @@ module.exports = {
         // EITHER screen name or user id is required, but NOT BOTH!
         // (for now we just allow username)
         var _params = {};
-        _params.screen_name = inputs.screenName;
+        _params.screen_name = inputs.screenName;// eslint-disable-line camelcase
         return _params;
       })(),
       json: true
@@ -153,10 +153,10 @@ module.exports = {
     }
     else {
       requestOpts.oauth = {
-        consumer_key: inputs.consumerKey,
-        consumer_secret: inputs.consumerSecret,
+        consumer_key: inputs.consumerKey,// eslint-disable-line camelcase
+        consumer_secret: inputs.consumerSecret,// eslint-disable-line camelcase
         token: inputs.accessToken,
-        token_secret: inputs.accessSecret
+        token_secret: inputs.accessSecret// eslint-disable-line camelcase
       };
     }
 

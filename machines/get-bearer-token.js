@@ -4,10 +4,10 @@ module.exports = {
   friendlyName: 'Get bearer token',
 
 
-  description: 'Generate a new bearer token for your app.',
+  description: 'Generate a new bearer token for your Twitter developer app.',
 
 
-  extendedDescription: 'This is not tied to any specific end user.',
+  extendedDescription: 'This DOES NOT allow you to act on behalf of any specific Twitter user -- for that, use `getAccessToken()`.  Instead, this machine allows you to get a bearer token, which requests the Twitter API on behalf of your Twitter app (and thus as _you_, the Twitter developer.)',
 
 
   moreInfoUrl: 'https://dev.twitter.com/oauth/application-only',

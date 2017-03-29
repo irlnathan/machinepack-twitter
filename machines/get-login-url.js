@@ -66,8 +66,8 @@ module.exports = {
       url: 'https://api.twitter.com/oauth/request_token',
       oauth: {
         callback: inputs.callbackUrl,
-        consumer_key: inputs.consumerKey,
-        consumer_secret: inputs.consumerSecret
+        consumer_key: inputs.consumerKey,// eslint-disable-line camelcase
+        consumer_secret: inputs.consumerSecret// eslint-disable-line camelcase
       }
     }, function(err, response, body) {
       if (err) {
@@ -77,9 +77,9 @@ module.exports = {
         return exits.error(response.statusCode);
       }
 
-      var access_token = qs.parse(body);
+      var parsedResBody = qs.parse(body);
 
-      return exits.success('https://twitter.com/oauth/authenticate?oauth_token=' + access_token.oauth_token);
+      return exits.success('https://twitter.com/oauth/authenticate?oauth_token=' + parsedResBody.oauth_token);
 
     });
   }
