@@ -9,27 +9,9 @@ module.exports = {
 
   inputs: {
 
-    consumerKey: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerKey` associated with one of your Twitter developer apps.',
-      required: true,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerKey: require('../constants/consumerKey.required'),
 
-    consumerSecret: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerSecret` associated with one of your Twitter developer apps.',
-      required: true,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerSecret: require('../constants/consumerSecret.required'),
 
     callbackUrl: {
       example: 'http://localhost:1337/auth/callback',
@@ -40,18 +22,12 @@ module.exports = {
   },
 
 
-  defaultExit: 'success',
-
-
   exits: {
 
-    error: {
-      description: 'Unexpected error occurred.'
-    },
-
     success: {
-      description: 'The initial URL where a user can allow/deny a specified Twitter app.',
-      example: 'https://twitter.com/oauth/authenticate?oauth_token=80Hl2t3SKgdPLyD0xMxoEPoJP3CEQSXV'
+      outputFriendlyName: 'URL',
+      outputDescription: 'The custom URL on Twitter.com where a user can allow/deny this Twitter app.',
+      outputExample: 'https://twitter.com/oauth/authenticate?oauth_token=80Hl2t3SKgdPLyD0xMxoEPoJP3CEQSXV'
     }
 
   },
@@ -59,8 +35,9 @@ module.exports = {
 
   fn: function(inputs, exits) {
 
-    var request = require('request');
+    var util = require('util');
     var qs = require('querystring');
+    var request = require('request');
 
     request.post({
       url: 'https://api.twitter.com/oauth/request_token',
@@ -70,14 +47,16 @@ module.exports = {
         consumer_secret: inputs.consumerSecret// eslint-disable-line camelcase
       }
     }, function(err, response, body) {
-      if (err) {
-        return exits.error(err);
-      }
+      if (err) { return exits.error(err); }
       if (response.statusCode > 299 || response.statusCode < 200) {
-        return exits.error(response.statusCode);
+        return exits.error(new Error('Unexpected response from Twitter API: '+response.statusCode+' :: '+util.inspect(body,{depth:5})));
       }
 
-      var parsedResBody = qs.parse(body);
+      var parsedResBody;
+      try {
+        parsedResBody = qs.parse(body);
+      }
+      catch (e) { return exits.error(e); }
 
       return exits.success('https://twitter.com/oauth/authenticate?oauth_token=' + parsedResBody.oauth_token);
 

@@ -29,27 +29,9 @@ module.exports = {
       defaultsTo: 5
     },
 
-    consumerKey: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerKey` associated with one of your Twitter developer apps.',
-      required: false,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerKey: require('../constants/consumerKey.optional'),
 
-    consumerSecret: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerSecret` associated with one of your Twitter developer apps.',
-      required: false,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerSecret: require('../constants/consumerSecret.optional'),
 
     accessToken: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
@@ -57,8 +39,7 @@ module.exports = {
       extendedDescription: 'This "permanent OAuth token" is how Twitter knows the end user has granted access to your app.',
       whereToGet: {
         description: 'Run the `getAccessToken` machine in this pack and use the returned `accessToken`.'
-      },
-      required: false
+      }
     },
 
     accessSecret: {
@@ -67,8 +48,7 @@ module.exports = {
       extendedDescription: 'This "permanent OAuth secret" is how Twitter knows the end user has granted access to your app.',
       whereToGet: {
         description: 'Run the `getAccessToken` machine in this pack and use the returned `accessSecret`.'
-      },
-      required: false
+      }
     },
 
     bearerToken: {
@@ -77,8 +57,7 @@ module.exports = {
       extendedDescription: 'Using the bearer token will cause this API request to happen on behalf of _your Twitter app_ -- i.e. on behalf of you, the Twitter developer.',
       whereToGet: {
         description: 'Run the `getBearerToken` machine in this pack and use the returned `bearerToken`.'
-      },
-      required: false
+      }
     }
 
   },
@@ -89,7 +68,7 @@ module.exports = {
     success: {
       outputFriendlyName: 'Tweets',
       outputDescription: 'An array of matching tweets.',
-      example: ['===']
+      outputExample: ['===']
     }
 
   },

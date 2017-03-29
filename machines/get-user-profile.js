@@ -15,27 +15,9 @@ module.exports = {
       required: true
     },
 
-    consumerKey: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerKey` associated with one of your Twitter developer apps.',
-      required: false,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerKey: require('../constants/consumerKey.optional'),
 
-    consumerSecret: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerSecret` associated with one of your Twitter developer apps.',
-      required: false,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerSecret: require('../constants/consumerSecret.optional'),
 
     accessToken: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
@@ -44,7 +26,6 @@ module.exports = {
       whereToGet: {
         description: 'Run the `getAccessToken` machine in this pack and use the returned `accessToken`.'
       },
-      required: false
     },
 
     accessSecret: {
@@ -54,7 +35,6 @@ module.exports = {
       whereToGet: {
         description: 'Run the `getAccessToken` machine in this pack and use the returned `accessSecret`.'
       },
-      required: false
     },
 
     bearerToken: {
@@ -63,24 +43,16 @@ module.exports = {
       whereToGet: {
         description: 'Run the `getBearerToken` machine in this pack and use the returned `bearerToken`.'
       },
-      required: false
     }
 
   },
 
 
-  defaultExit: 'success',
-
-
   exits: {
 
-    error: {
-      description: 'Unexpected error occurred.'
-    },
-
     success: {
-      description: 'Returns the user\'s profile.',
-      example: {
+      outputDescription: 'The Twitter user\'s profile information.',
+      outputExample: {
         name: 'John Galt',
         screenName: 'johngalt',
         profileImageUrl: 'http://pbs.twimg.com/profile_images/3367735923/e3fa48371ed40fb3466fc2cdec18a3aa_normal.jpeg',

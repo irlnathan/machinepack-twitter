@@ -7,7 +7,7 @@ module.exports = {
   description: 'Generate a new access token for acting on behalf of a particular Twitter user account.',
 
 
-  extendedDescription: 'This machine should be used from your Twitter webhook (i.e. the "callback route" that Twitter will redirect the user back to based on the `callbackUrl` you specify along with two values: "oauth_token" and "oauth_verifier".  These two values can then be passed to this machine in order to get the access token which authorizes your app to access this user\'s Twitter account.)',
+  extendedDescription: 'This machine should be used from your Twitter "webhook" (i.e. not exactly a true webhook, but the "callback route" that Twitter will redirect the user back to based on the `callbackUrl` you specify.  Note that this redirect URL will have bundled two values: "oauth_token" and "oauth_verifier" -- both of which should be passed to this machine in order to get the access token.  The access token returned by this machine can be used to authorize your subsequent requests to the Twitter API, allowing you to access/act on behalf of this particular user\'s Twitter account.)',
 
 
   moreInfoUrl: 'https://dev.twitter.com/web/sign-in/implementing',
@@ -15,27 +15,9 @@ module.exports = {
 
   inputs: {
 
-    consumerKey: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerKey` associated with one of your Twitter developer apps.',
-      required: true,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerKey: require('../constants/consumerKey.required'),
 
-    consumerSecret: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerSecret` associated with one of your Twitter developer apps.',
-      required: true,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerSecret: require('../constants/consumerSecret.required'),
 
     oauthToken: {
       example: 'UL1866Vlkl0aZyPw2Kd2u592D17Xl1uE',
@@ -63,10 +45,6 @@ module.exports = {
 
 
   exits: {
-
-    error: {
-      description: 'Unexpected error occurred.'
-    },
 
     success: {
       outputDescription: 'The user\'s permanent tokens, id, and screen name.',
@@ -103,10 +81,9 @@ module.exports = {
 
       var parsedResBody;
       try {
-        // oauth_token=3493938-B34829ABLD2NASI242AAGa32&oauth_token_secret=42Ga2gj249gADg9031jgasdGanv2139mmadval14aD&user_id=3493938&screen_name=mikermcneil
+        // oauth_token=949398-B34829ABABEFSI242AAGa32&oauth_token_secret=42Ga2gj249gADg903ah32gasdGanv2139mmadval123D&user_id=3483938&screen_name=mikermcneil
         parsedResBody = qs.parse(body);
-      }
-      catch (e) { return exits.error(e); }
+      } catch (e) { return exits.error(e); }
 
       return exits.success({
         userId: parsedResBody.user_id,

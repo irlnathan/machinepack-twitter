@@ -15,27 +15,9 @@ module.exports = {
 
   inputs: {
 
-    consumerKey: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerKey` associated with one of your Twitter developer apps.',
-      required: true,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerKey: require('../constants/consumerKey.required'),
 
-    consumerSecret: {
-      example: 'xAmBxAmBxAmBkjbyKkjbyKkjbyK',
-      description: 'The `consumerSecret` associated with one of your Twitter developer apps.',
-      required: true,
-      whereToGet: {
-        url: 'http://dev.twitter.com/apps',
-        description: 'Copy and paste an API key, or create one if you haven\'t already.',
-        extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-      }
-    },
+    consumerSecret: require('../constants/consumerSecret.required'),
 
   },
 
@@ -43,8 +25,9 @@ module.exports = {
   exits: {
 
     success: {
+      outputFriendlyName: 'Token',
       outputDescription: 'The bearer token for this Twitter app.',
-      example: '847489329-998DSdafaasdDSF08asdfda08agf6ad6fsdaa08dasdaf76sa5'
+      outputExample: '847489329-998DSdafaasdDSF08asdfda08agf6ad6fsdaa08dasdaf76sa5'
     }
 
   },
