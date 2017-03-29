@@ -74,6 +74,7 @@ module.exports = {
     bearerToken: {
       example: 'QDvCav5zRSafS795TckAerUV53xzgqRyrcfYX2i_PJFObCvACVRP-V7sfemiMPBh3TWypvagfZ6aoqfwKCNcBxg8XR_skdYUe5tsY9UzX9Z_8q4mR',
       description: 'Can be used in place of `consumerKey`, `consumerSecret`, `accessToken`, and `accessSecret`.',
+      extendedDescription: 'Using the bearer token will cause this API request to happen on behalf of _your Twitter app_ -- i.e. on behalf of you, the Twitter developer.',
       whereToGet: {
         description: 'Run the `getBearerToken` machine in this pack and use the returned `bearerToken`.'
       },

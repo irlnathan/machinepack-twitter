@@ -7,9 +7,6 @@ module.exports = {
   description: 'Get a user\'s Twitter profile information.',
 
 
-  extendedDescription: '',
-
-
   inputs: {
 
     screenName: {
