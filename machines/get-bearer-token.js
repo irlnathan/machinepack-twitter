@@ -1,10 +1,16 @@
 module.exports = {
 
 
-  friendlyName: 'Get login URL',
+  friendlyName: 'Get bearer token',
 
 
-  description: 'Get the URL on twitter.com that a user should visit to allow/deny the specified Twitter Developer app (i.e. your app).',
+  description: 'Generate a new bearer token for your app.',
+
+
+  extendedDescription: 'This is not tied to any specific end user.',
+
+
+  moreInfoUrl: 'https://dev.twitter.com/oauth/application-only',
 
 
   inputs: {
@@ -31,27 +37,14 @@ module.exports = {
       }
     },
 
-    callbackUrl: {
-      example: 'http://localhost:1337/auth/callback',
-      description: 'The callback URL where the end user will be redirected after visiting the login URL returned by this machine.',
-      required: true
-    }
-
   },
-
-
-  defaultExit: 'success',
 
 
   exits: {
 
-    error: {
-      description: 'Unexpected error occurred.'
-    },
-
     success: {
-      description: 'The initial URL where a user can allow/deny a specified Twitter app.',
-      example: 'https://twitter.com/oauth/authenticate?oauth_token=80Hl2t3SKgdPLyD0xMxoEPoJP3CEQSXV'
+      outputDescription: 'The bearer token for this Twitter app.',
+      example: '847489329-998DSdafaasdDSF08asdfda08agf6ad6fsdaa08dasdaf76sa5'
     }
 
   },
@@ -59,27 +52,34 @@ module.exports = {
 
   fn: function(inputs, exits) {
 
+    var util = require('util');
     var request = require('request');
-    var qs = require('querystring');
 
     request.post({
-      url: 'https://api.twitter.com/oauth/request_token',
-      oauth: {
-        callback: inputs.callbackUrl,
-        consumer_key: inputs.consumerKey,
-        consumer_secret: inputs.consumerSecret
-      }
+      url: 'https://api.twitter.com/oauth2/token',
+      headers: {
+        Authorization: 'Basic ' + Buffer.from(inputs.consumerKey+':'+inputs.consumerSecret).toString('base64'),
+        'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      body: 'grant_type=client_credentials'
     }, function(err, response, body) {
       if (err) {
         return exits.error(err);
       }
       if (response.statusCode > 299 || response.statusCode < 200) {
-        return exits.error(response.statusCode);
+        return exits.error(new Error('Twitter responded with a non 2xx status code:'+ response.statusCode + '   ' + util.inspect(body)));
       }
 
-      var access_token = qs.parse(body);
+      try {
+        body = JSON.parse(body);
+      }
+      catch (e) { return exits.error(e); }
 
-      return exits.success('https://twitter.com/oauth/authenticate?oauth_token=' + access_token.oauth_token);
+      if(body.token_type !== 'bearer') {
+        return exits.error(new Error('Consistency violation: invalid token_type. Should be \'bearer\', but instead got:'+util.inspect(body.token_type)+''));
+      }
+
+      return exits.success(body.access_token);
 
     });
   }

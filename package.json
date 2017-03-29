@@ -26,7 +26,9 @@
     "machines": [
       "get-login-url",
       "get-access-token",
-      "get-user-profile"
+      "get-user-profile",
+      "get-bearer-token",
+      "search-tweets"
     ],
     "testsUrl": "https://travis-ci.org/irlnathan/machinepack-twitter"
   }

@@ -7,7 +7,7 @@ module.exports = {
   description: 'Generate a new access token for acting on behalf of a particular Twitter user account.',
 
 
-  extendedDescription: 'This machine should be used from your Twitter callback route (i.e. Twitter will redirect the user back to the `callbackUrl` you specify along with two values: "oauth_token" and "oauth_verifier".  These two values can then be passed to this machine in order to get the access token which authorizes your app to access this user\'s Twitter account.)',
+  extendedDescription: 'This machine should be used from your Twitter webhook (i.e. the "callback route" that Twitter will redirect the user back to based on the `callbackUrl` you specify along with two values: "oauth_token" and "oauth_verifier".  These two values can then be passed to this machine in order to get the access token which authorizes your app to access this user\'s Twitter account.)',
 
 
   moreInfoUrl: 'https://dev.twitter.com/web/sign-in/implementing',
@@ -111,9 +111,7 @@ module.exports = {
         // oauth_token=3493938-B34829ABLD2NASI242AAGa32&oauth_token_secret=42Ga2gj249gADg9031jgasdGanv2139mmadval14aD&user_id=3493938&screen_name=mikermcneil
         parsedResponse = qs.parse(body);
       }
-      catch (e) {
-        return exits.error(e);
-      }
+      catch (e) { return exits.error(e); }
 
       return exits.success({
         userId: parsedResponse.user_id,
