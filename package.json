@@ -14,8 +14,8 @@
   "author": "Irl Nathan",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^3.2.0",
-    "machine": "^10.3.1",
+    "lodash": "3.10.1",
+    "machine": "^13.0.0-22",
     "request": "^2.53.0"
   },
   "repository": {
@@ -32,7 +32,9 @@
     "machines": [
       "get-login-url",
       "get-access-token",
-      "get-user-profile"
+      "get-user-profile",
+      "get-bearer-token",
+      "search-tweets"
     ],
     "testsUrl": "https://travis-ci.org/irlnathan/machinepack-twitter"
   }

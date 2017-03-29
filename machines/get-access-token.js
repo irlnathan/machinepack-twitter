@@ -111,9 +111,7 @@ module.exports = {
         // oauth_token=3493938-B34829ABLD2NASI242AAGa32&oauth_token_secret=42Ga2gj249gADg9031jgasdGanv2139mmadval14aD&user_id=3493938&screen_name=mikermcneil
         parsedResponse = qs.parse(body);
       }
-      catch (e) {
-        return exits.error(e);
-      }
+      catch (e) { return exits.error(e); }
 
       return exits.success({
         userId: parsedResponse.user_id,

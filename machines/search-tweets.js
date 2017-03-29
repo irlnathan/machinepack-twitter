@@ -1,10 +1,10 @@
 module.exports = {
 
 
-  friendlyName: 'Get user profile',
+  friendlyName: 'Search tweets',
 
 
-  description: 'Get a user\'s Twitter profile information.',
+  description: 'Search Twitter tweets.',
 
 
   extendedDescription: '',
@@ -12,10 +12,24 @@ module.exports = {
 
   inputs: {
 
-    screenName: {
-      example: 'johngalt',
-      description: 'The Twitter screen name (i.e. username) of a Twitter account to look up.',
-      required: true
+    q: {
+      example: 'pizza',
+      description: 'The search query.',
+      defaultsTo: ''
+    },
+
+    latitude: {
+      example: 32
+    },
+
+    longitude: {
+      example: 24
+    },
+
+    radius: {
+      example: 2,
+      description: 'The radius to search (in km).',
+      defaultsTo: 5
     },
 
     consumerKey: {
@@ -72,40 +86,12 @@ module.exports = {
   },
 
 
-  defaultExit: 'success',
-
-
   exits: {
 
-    error: {
-      description: 'Unexpected error occurred.'
-    },
-
     success: {
-      description: 'Returns the user\'s profile.',
-      example: {
-        name: 'John Galt',
-        screenName: 'johngalt',
-        profileImageUrl: 'http://pbs.twimg.com/profile_images/3367735923/e3fa48371ed40fb3466fc2cdec18a3aa_normal.jpeg',
-        profileImageUrlHttps: 'https://pbs.twimg.com/profile_images/3367735923/e3fa48371ed40fb3466fc2cdec18a3aa_normal.jpeg',
-        bannerImageUrl: 'https://pbs.twimg.com/profile_banners/54952598/1354583726',
-        location: 'Galt\'s Gulch',
-        description: 'Overall philosophical genius',
-        createdAt: '2009-07-08T16:50:31.000Z',
-        url: 'http://t.co/UDSfsSDFd',
-        followersCount: 5050234234,
-        friendsCount: 23423423423,
-        listedCount: 2342,
-        favoritesCount: 124,
-        statusesCount: 23423,
-        utcOffset: -18000,
-        timezone: 'Eastern Time (US & Canada)',
-        language: 'en',
-        isGeoEnabled: true,
-        isProtected: true,
-        isVerified: true,
-        isSuspended: true
-      }
+      outputFriendlyName: 'Tweets',
+      outputDescription: 'An array of matching tweets.',
+      example: ['===']
     }
 
   },
@@ -114,8 +100,8 @@ module.exports = {
   fn: function(inputs, exits) {
 
     var util = require('util');
-    var request = require('request');
     var _ = require('lodash');
+    var request = require('request');
 
     // If no bearer token was provided, then `consumerKey`, `consumerSecret`,
     // `accessToken`, and `accessSecret` must ALL be provided.
@@ -137,17 +123,29 @@ module.exports = {
       return exits.error(new Error('Usage error: If `bearerToken` was provided, then other credentials should not be provided.'));
     }
 
+    // SOME form of primary filter must be used-- either a search query (q) or location (lat/long)
+    // > We check only for lat here, because we validate the copresence of lat/long later anyways.
+    if(inputs.q === '' && _.isUndefined(inputs.latitude)) {
+      return exits.error(new Error('Usage error: SOME form of primary filter must be used-- either a search query (`q`) or location (`latitude`+`longitude`).'));
+    }
+
     var requestOpts = {
-      url: 'https://api.twitter.com/1.1/users/show.json',
-      qs: (function _determineParams (){
-        // EITHER screen name or user id is required, but NOT BOTH!
-        // (for now we just allow username)
-        var _params = {};
-        _params.screen_name = inputs.screenName;
-        return _params;
-      })(),
+      url: 'https://api.twitter.com/1.1/search/tweets.json',
+      qs: {},
       json: true
     };
+
+    if(!_.isUndefined(inputs.q)) {
+      requestOpts.qs.q = inputs.q;
+    }//>-
+
+    if(!_.isUndefined(inputs.latitude) || !_.isUndefined(inputs.longitude)) {
+      if(!_.isUndefined(inputs.latitude) && _.isUndefined(inputs.longitude) || _.isUndefined(inputs.latitude) && !_.isUndefined(inputs.longitude)) {
+        return exits.error(new Error('If `latitude` is specified, then `longitude` must also be specified (and vice versa)'));
+      }
+      requestOpts.qs.geocode = [inputs.latitude, inputs.longitude, inputs.radius+'km'].join(',');
+    }//>-
+
 
     if(!_.isUndefined(inputs.bearerToken)) {
       requestOpts.headers = {
@@ -171,29 +169,12 @@ module.exports = {
         return exits.error(new Error('Twitter responded with a non 2xx status code:'+ response.statusCode + '   ' + util.inspect(body)));
       }
 
-      return exits.success({
-        name: body.name,
-        screenName: body.screen_name,
-        profileImageUrl: body.profile_image_url,
-        profileImageUrlHttps: body.profile_image_url_https,
-        bannerImageUrl: body.profile_banner_url,
-        location: body.location,
-        description: body.description,
-        url: body.url,
-        followersCount: body.followers_count,
-        friendsCount: body.friends_count,
-        listedCount: body.listed_count,
-        createdAt: (new Date(body.created_at)).toJSON(),
-        favoritesCount: body.favourites_count,
-        utcOffset: body.utc_offset,
-        timezone: body.time_zone,
-        isVerified: body.verified,
-        language: body.lang,
-        isGeoEnabled: body.geo_enabled,
-        statusesCount: body.statuses_count,
-        isProtected: body.protected,
-        isSuspended: body.suspended
-      });
+      var tweets;
+      try {
+        tweets = body.statuses;
+      } catch (e) { return exits.error(e); }
+
+      return exits.success(tweets);
     });
   }
 
