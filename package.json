@@ -2,29 +2,23 @@
   "name": "machinepack-twitter",
   "version": "1.2.0",
   "description": "Communicate with the Twitter API to get profile data, tweets, followers, and more.",
-  "scripts": {
-    "test": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
-  },
-  "keywords": [
-    "Twitter",
-    "Twitter api",
-    "machines",
-    "machinepack"
-  ],
+  "keywords": [ "Twitter", "twitter-api", "oauth", "social", "machines", "machinepack" ],
   "author": "Irl Nathan",
   "license": "MIT",
-  "dependencies": {
-    "lodash": "^3.2.0",
-    "machine": "^10.3.1",
-    "request": "^2.53.0"
+  "scripts": {
+    "custom-tests": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js",
+    "lint": "node ./node_modules/eslint/bin/eslint . --max-warnings=0",
+    "test": "npm run custom-tests && nodever=`node -e \"console.log('\\`node -v\\`'[1]);\"` && if [ $nodever != \"0\" ]; then npm run lint; fi"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:irlnathan/machinepack-twitter.git"
+  "dependencies": {
+    "machine": "^13.0.0-22",
+    "request": "2.74.0"
   },
   "devDependencies": {
+    "eslint": "3.5.0",
     "test-machinepack-mocha": "^2.1.1"
   },
+  "repository": { "type": "git", "url": "git@github.com:irlnathan/machinepack-twitter.git" },
   "machinepack": {
     "friendlyName": "Twitter",
     "machineDir": "machines/",
