@@ -15,10 +15,10 @@
   "scripts": {
     "custom-tests": "node ./node_modules/mocha/bin/mocha",
     "lint": "node ./node_modules/eslint/bin/eslint . --max-warnings=0",
-    "test": "npm run custom-tests && nodever=`node -e \"console.log('\\`node -v\\`'[1]);\"` && if [ $nodever != \"0\" ]; then npm run lint; fi"
+    "test": "npm run custom-tests && npm run lint"
   },
   "dependencies": {
-    "machine": "^13.0.0-22",
+    "machine": "^15.0.0-3",
     "request": "2.74.0"
   },
   "devDependencies": {
@@ -31,7 +31,7 @@
   },
   "machinepack": {
     "friendlyName": "Twitter",
-    "machineDir": "machines/",
+    "machineDir": "lib/",
     "iconSrc": "https://s3-us-west-1.amazonaws.com/machinepack-icons/machinepack_twitter.png",
     "machines": [
       "get-login-url",

@@ -8,5 +8,6 @@ module.exports = {
     url: 'http://dev.twitter.com/apps',
     description: 'Copy and paste an API key, or create one if you haven\'t already.',
     extendedDescription: 'If you don\'t have any Twitter apps created yet, you\'ll need to make one first.'
-  }
+  },
+  protect: true
 };
