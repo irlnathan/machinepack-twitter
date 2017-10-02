@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "machine": "^15.0.0-3",
-    "request": "2.74.0"
+    "request": "2.81.0"
   },
   "devDependencies": {
     "eslint": "3.5.0",
